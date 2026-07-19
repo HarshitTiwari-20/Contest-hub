@@ -7,8 +7,10 @@
     "dev": "concurrently -n web,api -c cyan,magenta \"npm run dev --prefix web\" \"npm run dev --prefix api\"",
     "dev:web": "npm run dev --prefix web",
     "dev:api": "npm run dev --prefix api",
-    "build": "npm run build --prefix api && npm run build --prefix web",
-    "start": "concurrently -n web,api -c cyan,magenta \"npm run start --prefix web\" \"npm run start --prefix api\"",
+    "build": "npm run build --prefix web",
+    "build:all": "npm run build --prefix api && npm run build --prefix web",
+    "start": "npm run start --prefix web",
+    "start:all": "concurrently -n web,api -c cyan,magenta \"npm run start --prefix web\" \"npm run start --prefix api\"",
     "db:generate": "npm run db:generate --prefix api",
     "db:push": "npm run db:push --prefix api",
     "db:seed": "npm run db:seed --prefix api",
@@ -22,6 +24,6 @@
     "concurrently": "^9.1.2"
   },
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   }
 }
