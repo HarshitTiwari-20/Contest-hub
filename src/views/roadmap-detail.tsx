@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
   ArrowLeft,
@@ -43,7 +43,14 @@ type RoadmapDetail = {
 };
 
 export default function RoadmapDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
+  const params = useParams<{ slug?: string | string[] }>();
+  const pathname = usePathname();
+  // Support /roadmaps/[slug] and catch-all /roadmaps/:slug
+  const slug = Array.isArray(params.slug)
+    ? params.slug[0] === "roadmaps"
+      ? params.slug[1]
+      : params.slug[0]
+    : params.slug || pathname.split("/").filter(Boolean)[1] || "";
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [data, setData] = React.useState<RoadmapDetail | null>(null);

@@ -1,4 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 import {
   ArrowRight,
   BarChart3,
@@ -8,8 +13,6 @@ import {
   Trophy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 
 const features = [
   {
@@ -34,10 +37,22 @@ const features = [
   },
 ];
 
-export default async function LandingPage() {
-  const session = await auth();
-  if (session?.user) {
-    redirect("/dashboard");
+export default function LandingPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      router.replace("/dashboard");
+    }
+  }, [status, session, router]);
+
+  if (status === "authenticated") {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
+        Redirecting to dashboard…
+      </div>
+    );
   }
 
   return (

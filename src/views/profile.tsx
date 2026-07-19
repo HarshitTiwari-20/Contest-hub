@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Flame, Loader2, MapPin, GraduationCap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,7 +41,16 @@ type ProfileData = {
 };
 
 export default function ProfilePage() {
-  const { username } = useParams<{ username: string }>();
+  const params = useParams<{ username?: string; slug?: string[] }>();
+  const pathname = usePathname();
+  // Support both /profile/[username] route shape and catch-all [...slug]
+  const username =
+    params.username ||
+    (Array.isArray(params.slug) && params.slug[0] === "profile"
+      ? params.slug[1]
+      : undefined) ||
+    pathname.split("/").filter(Boolean)[1] ||
+    "";
   const { data: session } = useSession();
   const isMe =
     username === session?.user?.username || username === "me";
