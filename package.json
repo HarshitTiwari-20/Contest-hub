@@ -6,18 +6,18 @@
   "scripts": {
     "dev": "next dev",
     "dev:web": "next dev",
-    "dev:api": "npm run dev --prefix api",
-    "dev:all": "concurrently -n web,api -c cyan,magenta \"next dev\" \"npm run dev --prefix api\"",
+    "dev:api": "npm run dev --prefix backend",
+    "dev:all": "concurrently -n web,api -c cyan,magenta \"next dev\" \"npm run dev --prefix backend\"",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "db:generate": "npm run db:generate --prefix api",
-    "db:push": "npm run db:push --prefix api",
-    "db:seed": "npm run db:seed --prefix api",
-    "db:studio": "npm run db:studio --prefix api",
+    "db:generate": "npm run db:generate --prefix backend",
+    "db:push": "npm run db:push --prefix backend",
+    "db:seed": "npm run db:seed --prefix backend",
+    "db:studio": "npm run db:studio --prefix backend",
     "docker:up": "docker compose up -d postgres redis",
     "docker:down": "docker compose down",
-    "install:all": "npm install && npm install --prefix api"
+    "install:all": "npm install && npm install --prefix backend"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.2.2",

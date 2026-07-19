@@ -130,7 +130,7 @@ LeetCode · Codeforces · CodeChef · AtCoder · GeeksforGeeks · HackerRank · 
 | Toasts | **Sonner** |
 | Icons | **lucide-react** |
 
-### Backend (`api/`)
+### Backend (`backend/`)
 
 | Layer | Choice |
 |-------|--------|
@@ -258,7 +258,7 @@ cp api/.env.example api/.env
 # Edit DATABASE_URL in api/.env
 
 # Push Prisma schema
-cd api && npx prisma generate && npx prisma db push && cd ..
+cd backend && npx prisma generate && npx prisma db push && cd ..
 
 # Run both
 npm run dev
@@ -270,7 +270,7 @@ npm run dev
 
 ```bash
 # API
-cd api && npm install && npm run dev
+cd backend && npm install && npm run dev
 
 # Web (other terminal)
 cd web && npm install && npm run dev
@@ -308,7 +308,7 @@ NODE_ENV=development
 
 ### Root `.env` (optional)
 
-You can keep a root-level `DATABASE_URL` for monorepo tooling. The API reads **`api/.env`** via `dotenv` when the API process starts from `api/`.
+You can keep a root-level `DATABASE_URL` for monorepo tooling. The API reads **`api/.env`** via `dotenv` when the API process starts from `backend/`.
 
 ### `web/.env.local` (optional)
 
@@ -327,7 +327,7 @@ Currently the UI primarily uses **client-side mock data** so pages work offline.
 A safe template lives at `api/.env.example` — copy it when onboarding:
 
 ```bash
-cd api && cp .env.example .env
+cd backend && cp .env.example .env
 # then edit DATABASE_URL
 ```
 
@@ -367,7 +367,7 @@ This project uses **Prisma ORM v7**:
 With `DATABASE_URL` set in `api/.env`:
 
 ```bash
-cd api
+cd backend
 npx prisma generate    # generate Prisma Client → src/generated/prisma
 npx prisma db push     # push schema to the database (great for demos/prototypes)
 # or, for migration history:
@@ -377,7 +377,7 @@ npx prisma db push     # push schema to the database (great for demos/prototypes
 ### Prisma Studio (visual DB browser)
 
 ```bash
-cd api
+cd backend
 npm run db:studio
 # opens http://localhost:5555
 ```
@@ -445,14 +445,14 @@ npm run docker:down
 | App | Dev URL | Command |
 |-----|---------|---------|
 | Landing + Dashboard | http://localhost:3000 | `cd web && npm run dev` |
-| API health | http://localhost:4000/health | `cd api && npm run dev` |
+| API health | http://localhost:4000/health | `cd backend && npm run dev` |
 | Both | — | `npm run dev` (repo root) |
 
 ### Production build (local)
 
 ```bash
 # API
-cd api && npm run build && npm start
+cd backend && npm run build && npm start
 
 # Web
 cd web && npm run build && npm start
@@ -706,7 +706,7 @@ Defined in `web/src/app/globals.css` as HSL CSS variables:
 
 ### API → Railway / Fly / Render
 
-1. Root: `api/`  
+1. Root: `backend/`  
 2. Build: `npm install && npx prisma generate && npm run build`  
 3. Start: `npx prisma db push && npm start` (or use migrations)  
 4. Env: `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGIN`, `REDIS_URL`, `PORT`
@@ -789,7 +789,7 @@ Browser → Vercel (Next.js)
 ### Prisma errors after schema change
 
 ```bash
-cd api
+cd backend
 npx prisma generate
 npx prisma db push
 ```
@@ -826,13 +826,13 @@ The frontend currently renders **mock data by design** for a zero-config demo. W
 ## 21. Contributing
 
 1. Fork / branch from `main`  
-2. Keep UI changes in `web/`, API in `api/`  
+2. Keep UI changes in `web/`, API in `backend/`  
 3. Prefer TypeScript strictness; avoid `any`  
 4. Do not commit secrets  
 5. Run builds before PR:
 
 ```bash
-cd api && npm run build
+cd backend && npm run build
 cd ../web && npm run build
 ```
 
@@ -872,10 +872,10 @@ MIT — free to use for portfolio, hackathons, and products. Attribution appreci
 |-------|---------------|----------|
 | Web dev | `cd web && npm run dev` | 200 on `/` and `/dashboard` |
 | Web build | `cd web && npm run build` | Success |
-| API dev | `cd api && npm run dev` | Listens on `:4000` |
+| API dev | `cd backend && npm run dev` | Listens on `:4000` |
 | API health | `curl localhost:4000/health` | `{ "ok": true, ... }` |
-| API build | `cd api && npm run build` | `dist/` emitted |
-| DB push | `cd api && npx prisma db push` | Schema applied (with valid `DATABASE_URL`) |
+| API build | `cd backend && npm run build` | `dist/` emitted |
+| DB push | `cd backend && npx prisma db push` | Schema applied (with valid `DATABASE_URL`) |
 
 ---
 

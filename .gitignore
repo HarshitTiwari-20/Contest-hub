@@ -10,14 +10,14 @@ build
 coverage
 .turbo
 .vercel
-api/prisma/*.db
-api/prisma/*.db-journal
+backend/prisma/*.db
+backend/prisma/*.db-journal
 *.tsbuildinfo
 .idea
 .vscode
 
-api/src/generated
-api/src/generated/**
+backend/src/generated
+backend/src/generated/**
 
 # next.js
 /.next/
@@ -29,6 +29,6 @@ next-env.d.ts
 # env
 .env*
 !.env.example
-api/.env
-api/.env.*
-!api/.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example

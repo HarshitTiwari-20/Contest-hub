@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { apiRegister } from "@/lib/api";
 import { registerSchema } from "@/lib/validations/auth";
 
-export default function RegisterPage() {
+export default function RegisterForm() {
   const router = useRouter();
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
