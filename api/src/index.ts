@@ -6,7 +6,17 @@ import rateLimit from "@fastify/rate-limit";
 import { registerRoutes } from "./routes/index.js";
 
 const PORT = Number(process.env.PORT ?? 4000);
-const CORS_ORIGIN = process.env.CORS_ORIGIN ?? "http://localhost:3000";
+
+/** Browser Origin never has a trailing slash — strip them so env typos don't break CORS. */
+function parseCorsOrigins(raw: string | undefined): string[] {
+  const value = raw?.trim() || "http://localhost:3000";
+  return value
+    .split(",")
+    .map((s) => s.trim().replace(/\/+$/, ""))
+    .filter(Boolean);
+}
+
+const CORS_ORIGINS = parseCorsOrigins(process.env.CORS_ORIGIN);
 
 async function main() {
   const app = Fastify({
@@ -16,7 +26,7 @@ async function main() {
   });
 
   await app.register(cors, {
-    origin: CORS_ORIGIN.split(",").map((s) => s.trim()),
+    origin: CORS_ORIGINS,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-User-Id"],
