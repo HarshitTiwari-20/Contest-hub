@@ -1,0 +1,27 @@
+{
+  "name": "cp-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Professional Competitive Programming Hub — GitHub + LeetCode + Codeforces + Notion",
+  "scripts": {
+    "dev": "concurrently -n web,api -c cyan,magenta \"npm run dev --prefix web\" \"npm run dev --prefix api\"",
+    "dev:web": "npm run dev --prefix web",
+    "dev:api": "npm run dev --prefix api",
+    "build": "npm run build --prefix api && npm run build --prefix web",
+    "start": "concurrently -n web,api -c cyan,magenta \"npm run start --prefix web\" \"npm run start --prefix api\"",
+    "db:generate": "npm run db:generate --prefix api",
+    "db:push": "npm run db:push --prefix api",
+    "db:seed": "npm run db:seed --prefix api",
+    "db:studio": "npm run db:studio --prefix api",
+    "docker:up": "docker compose up -d postgres redis",
+    "docker:down": "docker compose down",
+    "lint": "npm run lint --prefix web",
+    "install:all": "npm install && npm install --prefix web && npm install --prefix api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,383 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Platform {
+  LEETCODE
+  CODEFORCES
+  CODECHEF
+  ATCODER
+  GFG
+  HACKERRANK
+  HACKEREARTH
+  CODING_NINJAS
+  CSES
+  TOPCODER
+  KICKSTART
+  META_HC
+  ICPC
+  AOC
+  GITHUB
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum Verdict {
+  AC
+  WA
+  TLE
+  MLE
+  RE
+  CE
+  PARTIAL
+  PENDING
+}
+
+enum ContestStatus {
+  UPCOMING
+  LIVE
+  ENDED
+}
+
+enum GoalPeriod {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  username      String   @unique
+  passwordHash  String?
+  name          String?
+  bio           String?
+  avatarUrl     String?
+  country       String?
+  college       String?
+  githubUrl     String?
+  linkedinUrl   String?
+  portfolioUrl  String?
+  resumeUrl     String?
+  favoriteLang  String?
+  favoritePlat  Platform?
+  isPublic      Boolean  @default(true)
+  xp            Int      @default(0)
+  level         Int      @default(1)
+  coins         Int      @default(0)
+  streak        Int      @default(0)
+  maxStreak     Int      @default(0)
+  lastActiveAt  DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  platformAccounts PlatformAccount[]
+  submissions      Submission[]
+  bookmarks        Bookmark[]
+  notes            Note[]
+  goals            Goal[]
+  achievements     UserAchievement[]
+  following        Follow[]          @relation("Following")
+  followers        Follow[]          @relation("Followers")
+  contestResults   ContestResult[]
+  flashcards       Flashcard[]
+  collections      Collection[]
+  discussions      Discussion[]
+  comments         Comment[]
+  inviteCodes      InviteCode[]
+}
+
+model InviteCode {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  userId    String
+  uses      Int      @default(0)
+  maxUses   Int      @default(50)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PlatformAccount {
+  id           String   @id @default(cuid())
+  userId       String
+  platform     Platform
+  handle       String
+  rating       Int?
+  maxRating    Int?
+  rank         String?
+  globalRank   Int?
+  solvedCount  Int      @default(0)
+  easySolved   Int      @default(0)
+  mediumSolved Int      @default(0)
+  hardSolved   Int      @default(0)
+  contests     Int      @default(0)
+  acceptance   Float?
+  streak       Int      @default(0)
+  badges       Json?
+  metadata     Json?
+  lastSyncedAt DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, platform])
+  @@index([platform, handle])
+}
+
+model Contest {
+  id            String        @id @default(cuid())
+  platform      Platform
+  externalId    String?
+  name          String
+  url           String?
+  startTime     DateTime
+  endTime       DateTime
+  durationMin   Int
+  status        ContestStatus @default(UPCOMING)
+  difficulty    String?
+  ratingMin     Int?
+  ratingMax     Int?
+  virtualAvail  Boolean       @default(true)
+  participants  Int?
+  metadata      Json?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  results ContestResult[]
+
+  @@unique([platform, externalId])
+  @@index([startTime])
+  @@index([status])
+}
+
+model ContestResult {
+  id         String   @id @default(cuid())
+  userId     String
+  contestId  String
+  rank       Int?
+  rating     Int?
+  ratingDelta Int?
+  solved     Int      @default(0)
+  penalty    Int?
+  accuracy   Float?
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contest Contest @relation(fields: [contestId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contestId])
+}
+
+model Problem {
+  id            String     @id @default(cuid())
+  platform      Platform
+  externalId    String
+  title         String
+  url           String?
+  difficulty    Difficulty
+  rating        Int?
+  acceptance    Float?
+  tags          String[]
+  companies     String[]
+  frequency     Int?
+  isPremium     Boolean    @default(false)
+  contestId     String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  submissions Submission[]
+  bookmarks   Bookmark[]
+  notes       Note[]
+  flashcards  Flashcard[]
+
+  @@unique([platform, externalId])
+  @@index([tags])
+  @@index([difficulty])
+  @@index([companies])
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  userId      String
+  problemId   String
+  platform    Platform
+  verdict     Verdict
+  language    String
+  runtimeMs   Int?
+  memoryKb    Int?
+  timeTaken   Int?
+  code        String?
+  submittedAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([userId, submittedAt])
+  @@index([verdict])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  problemId String?
+  contestId String?
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem? @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  userId    String
+  problemId String?
+  title     String
+  content   String
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem? @relation(fields: [problemId], references: [id], onDelete: Cascade)
+}
+
+model Flashcard {
+  id         String    @id @default(cuid())
+  userId     String
+  problemId  String?
+  front      String
+  back       String
+  nextReview DateTime?
+  ease       Float     @default(2.5)
+  createdAt  DateTime  @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem? @relation(fields: [problemId], references: [id], onDelete: Cascade)
+}
+
+model Goal {
+  id          String     @id @default(cuid())
+  userId      String
+  title       String
+  description String?
+  period      GoalPeriod
+  target      Int
+  current     Int        @default(0)
+  metric      String
+  isCompleted Boolean    @default(false)
+  startsAt    DateTime   @default(now())
+  endsAt      DateTime?
+  createdAt   DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  description String
+  icon        String?
+  xpReward    Int      @default(100)
+  category    String?
+
+  users UserAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+}
+
+model Roadmap {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  category    String
+  order       Int      @default(0)
+  nodes       Json
+  createdAt   DateTime @default(now())
+}
+
+model Collection {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isPublic    Boolean  @default(false)
+  problemIds  String[]
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Discussion {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  content   String
+  tags      String[]
+  likes     Int      @default(0)
+  problemId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments Comment[]
+}
+
+model Comment {
+  id           String   @id @default(cuid())
+  userId       String
+  discussionId String
+  content      String
+  likes        Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  discussion Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
