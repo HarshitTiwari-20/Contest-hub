@@ -49,6 +49,7 @@ export async function registerAuthRoutes(app: FastifyInstance) {
         },
       });
 
+      req.log.info({ userId: user.id, username }, "user registered");
       return reply.status(201).send({ user: publicUser(user) });
     } catch (err) {
       if (err instanceof ZodError) {
@@ -57,8 +58,12 @@ export async function registerAuthRoutes(app: FastifyInstance) {
           issues: formatZodError(err),
         });
       }
-      req.log.error(err);
-      return reply.status(500).send({ error: "Failed to create account" });
+      const message = err instanceof Error ? err.message : "Unknown error";
+      req.log.error({ err, message }, "register failed");
+      return reply.status(500).send({
+        error: "Failed to create account",
+        detail: process.env.NODE_ENV === "production" ? undefined : message,
+      });
     }
   });
 
