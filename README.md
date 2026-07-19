@@ -1,9 +1,9 @@
-# CP Hub
+# Contest Hub
 
 ### Competitive Programming Dashboard  
 **GitHub + LeetCode + Codeforces + Notion + Spotify Wrapped for CP**
 
-CP Hub is a modern, production-oriented monorepo that unifies contests, multi-platform stats, problem search, AI-assisted practice, roadmaps, social ranking, notes, and analytics into one developer-first SaaS experience.
+Contest Hub is a modern, production-oriented monorepo that unifies contests, multi-platform stats, problem search, AI-assisted practice, roadmaps, social ranking, notes, and analytics into one developer-first SaaS experience.
 
 It is designed to feel like a premium product inspired by:
 
@@ -50,7 +50,7 @@ It is designed to feel like a premium product inspired by:
 
 Competitive programmers juggle **many platforms** (Codeforces, LeetCode, AtCoder, CodeChef, GFG, CSES, …), **spreadsheets for tracking**, **scattered notes**, and **no unified analytics**.
 
-CP Hub’s goal is a single intelligent dashboard where you can:
+Contest Hub’s goal is a single intelligent dashboard where you can:
 
 - Discover every major contest in one calendar  
 - Connect all handles and auto-sync ratings / solved counts  
@@ -879,4 +879,4 @@ MIT — free to use for portfolio, hackathons, and products. Attribution appreci
 
 ---
 
-**CP Hub** — *One dashboard. Every platform. Smarter practice.*
+**Contest Hub** — *One dashboard. Every platform. Smarter practice.*

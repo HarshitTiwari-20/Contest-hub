@@ -31,7 +31,7 @@ async function main() {
 
   app.get("/health", async () => ({
     ok: true,
-    service: "cp-hub-api",
+    service: "contest-hub-api",
     time: new Date().toISOString(),
   }));
 
@@ -39,7 +39,7 @@ async function main() {
 
   try {
     await app.listen({ port: PORT, host: "0.0.0.0" });
-    app.log.info(`CP Hub API listening on :${PORT}`);
+    app.log.info(`Contest Hub API listening on :${PORT}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);

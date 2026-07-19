@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Code2 className="h-4 w-4" />
             </div>
-            <span className="text-sm font-semibold tracking-tight">CP Hub</span>
+            <span className="text-sm font-semibold tracking-tight">Contest Hub</span>
           </Link>
         </div>
       </header>

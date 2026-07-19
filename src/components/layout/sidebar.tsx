@@ -119,7 +119,7 @@ export function Sidebar() {
           </div>
           {sidebarOpen && (
             <span className="truncate text-sm font-semibold tracking-tight">
-              CP Hub
+              Contest Hub
             </span>
           )}
         </Link>

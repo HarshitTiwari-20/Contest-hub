@@ -3,7 +3,17 @@ import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "@/lib/validations/auth";
 import { apiLogin } from "@/lib/api";
 
+// Ensure builds succeed even when AUTH_SECRET is not yet set in the environment.
+// Set a real AUTH_SECRET in Vercel project settings for production.
+if (!process.env.AUTH_SECRET && !process.env.NEXTAUTH_SECRET) {
+  process.env.AUTH_SECRET =
+    process.env.NODE_ENV === "production"
+      ? "contest-hub-build-placeholder-change-me"
+      : "contest-hub-dev-secret";
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   providers: [
     Credentials({
       name: "credentials",

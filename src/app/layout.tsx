@@ -15,8 +15,8 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "CP Hub — Competitive Programming Dashboard",
-    template: "%s · CP Hub",
+    default: "Contest Hub — Competitive Programming Dashboard",
+    template: "%s · Contest Hub",
   },
   description:
     "Track contests, multi-platform stats, practice goals, and growth in one competitive programming dashboard.",
@@ -27,10 +27,11 @@ export const metadata: Metadata = {
     "contest calendar",
     "coding dashboard",
     "DSA",
+    "contest-hub",
   ],
-  authors: [{ name: "CP Hub" }],
+  authors: [{ name: "Contest Hub" }],
   openGraph: {
-    title: "CP Hub — Competitive Programming Dashboard",
+    title: "Contest Hub — Competitive Programming Dashboard",
     description:
       "Track contests, multi-platform stats, and growth in one place.",
     type: "website",

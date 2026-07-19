@@ -18,3 +18,17 @@ api/prisma/*.db-journal
 
 api/src/generated
 api/src/generated/**
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# env
+.env*
+!.env.example
+api/.env
+api/.env.*
+!api/.env.example

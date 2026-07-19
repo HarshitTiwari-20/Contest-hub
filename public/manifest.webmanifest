@@ -1,6 +1,6 @@
 {
-  "name": "CP Hub",
-  "short_name": "CP Hub",
+  "name": "Contest Hub",
+  "short_name": "Contest Hub",
   "description": "Competitive Programming Dashboard — contests, analytics, AI practice",
   "start_url": "/dashboard",
   "display": "standalone",
